@@ -2,133 +2,309 @@
     box-sizing: border-box;
 }
 
+
 body {
     margin: 0;
+
     font-family: Arial, sans-serif;
+
     background: #111827;
+
     color: white;
 }
 
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
 header {
     text-align: center;
+
     padding: 45px 20px 30px;
+
     background: #020617;
 }
 
+
 header h1 {
     margin: 0;
+
     font-size: 42px;
 }
 
+
 header p {
     color: #9ca3af;
+
     font-size: 17px;
 }
 
+
+/* ============================= */
+/* MAIN */
+/* ============================= */
+
 main {
     width: 90%;
+
     max-width: 900px;
+
     margin: 30px auto;
 }
 
+
+/* ============================= */
+/* CARDS */
+/* ============================= */
+
 .card {
     background: #1f2937;
+
     border-radius: 18px;
+
     padding: 25px;
+
     margin-bottom: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25);
 }
+
 
 .card h2 {
     margin-top: 0;
 }
 
+
+/* ============================= */
+/* VIDEO INPUT */
+/* ============================= */
+
 #videoInput {
-    display: none;
-}
+    display: block;
 
-.upload-button,
-button,
-.download-button {
-    display: inline-block;
-    border: none;
-    border-radius: 10px;
-    padding: 13px 20px;
-    background: #2563eb;
+    width: 100%;
+
+    padding: 15px;
+
+    background: #111827;
+
+    border: 2px dashed #3b82f6;
+
+    border-radius: 12px;
+
     color: white;
-    font-size: 16px;
-    font-weight: bold;
+
     cursor: pointer;
-    text-decoration: none;
-    transition: 0.2s;
+
+    font-size: 16px;
 }
 
-.upload-button:hover,
-button:hover,
-.download-button:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
+
+#videoInput:hover {
+    border-color: #60a5fa;
+
+    background: #172033;
 }
+
+
+/* ============================= */
+/* BESTANDSNAAM */
+/* ============================= */
 
 #fileName {
     margin-top: 15px;
+
     color: #d1d5db;
+
+    word-break: break-word;
 }
+
 
 .small {
     color: #9ca3af;
+
     font-size: 13px;
 }
 
+
+/* ============================= */
+/* VIDEO */
+/* ============================= */
+
 video {
     width: 100%;
+
     max-height: 450px;
+
     background: black;
+
     border-radius: 10px;
+
     display: block;
+
     margin-bottom: 15px;
 }
 
+
+/* ============================= */
+/* CANVAS */
+/* ============================= */
+
 canvas {
     width: 100%;
+
     max-height: 450px;
+
     background: black;
+
     border-radius: 10px;
-    display: none;
+
+    display: block;
 }
+
+
+/* ============================= */
+/* STATUS */
+/* ============================= */
 
 #status {
     color: #9ca3af;
+
+    margin-bottom: 0;
 }
+
+
+/* ============================= */
+/* LABELS */
+/* ============================= */
 
 label {
     display: block;
+
     margin-top: 15px;
+
     margin-bottom: 8px;
 }
 
+
+/* ============================= */
+/* SLIDERS */
+/* ============================= */
+
 input[type="range"] {
     width: 100%;
+
     cursor: pointer;
 }
 
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
 .controls {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 10px;
 }
+
+
+button {
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 13px 20px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+button:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+
+button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ============================= */
+/* EXPORT BUTTON */
+/* ============================= */
 
 .export {
     background: #16a34a;
 }
 
+
+/* ============================= */
+/* DOWNLOAD */
+/* ============================= */
+
 .download-button {
+    display: inline-block;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 13px 20px;
+
     background: #16a34a;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-decoration: none;
 }
+
+
+.download-button:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+
+/* ============================= */
+/* HIDDEN */
+/* ============================= */
 
 .hidden {
     display: none;
 }
+
+
+/* ============================= */
+/* MOBIEL */
+/* ============================= */
 
 @media (max-width: 600px) {
 
@@ -136,13 +312,16 @@ input[type="range"] {
         font-size: 32px;
     }
 
+
     .card {
         padding: 18px;
     }
 
+
     .controls {
         flex-direction: column;
     }
+
 
     button {
         width: 100%;
