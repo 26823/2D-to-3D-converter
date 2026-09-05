@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>2D → 3D Anaglyph Converter</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,43 +20,57 @@
 
     <!-- VIDEO KIEZEN -->
     <section class="card">
+
         <h2>1. Kies je video</h2>
 
+        <!-- GEWOON ZICHTBAAR BESTANDSVELD -->
         <input
             type="file"
             id="videoInput"
             accept="video/*"
         >
 
-        <label for="videoInput" class="upload-button">
-            🎥 Video kiezen
-        </label>
-
-        <p id="fileName">Nog geen video gekozen</p>
+        <p id="fileName">
+            Nog geen video gekozen
+        </p>
 
         <p class="small">
             Je video wordt lokaal in je browser verwerkt.
         </p>
+
     </section>
+
 
     <!-- VIDEO -->
     <section class="card">
+
         <h2>2. Voorbeeld</h2>
 
-        <video id="sourceVideo" controls playsinline></video>
+        <video
+            id="sourceVideo"
+            controls
+            playsinline
+        ></video>
 
         <canvas id="canvas"></canvas>
 
-        <p id="status">Wacht op een video...</p>
+        <p id="status">
+            Wacht op een video...
+        </p>
+
     </section>
+
 
     <!-- INSTELLINGEN -->
     <section class="card">
+
         <h2>3. 3D-instellingen</h2>
 
-        <label>
+        <label for="depth">
             Diepte:
-            <strong><span id="depthValue">8</span> px</strong>
+            <strong>
+                <span id="depthValue">8</span> px
+            </strong>
         </label>
 
         <input
@@ -65,9 +81,12 @@
             value="8"
         >
 
-        <label>
+
+        <label for="strength">
             Sterkte:
-            <strong><span id="strengthValue">1.0</span></strong>
+            <strong>
+                <span id="strengthValue">1.0</span>
+            </strong>
         </label>
 
         <input
@@ -78,35 +97,58 @@
             value="1"
             step="0.1"
         >
+
     </section>
+
 
     <!-- BEDIENING -->
     <section class="card controls">
 
-        <button id="playButton">▶ Afspelen</button>
-        <button id="pauseButton">⏸ Pauze</button>
-        <button id="stopButton">⏹ Stop</button>
+        <button id="playButton">
+            ▶ Afspelen
+        </button>
 
-        <button id="exportButton" class="export">
+        <button id="pauseButton">
+            ⏸ Pauze
+        </button>
+
+        <button id="stopButton">
+            ⏹ Stop
+        </button>
+
+        <button
+            id="exportButton"
+            class="export"
+        >
             🎞️ 3D-video maken
         </button>
 
     </section>
 
-    <!-- DOWNLOAD -->
-    <section id="resultCard" class="card hidden">
+
+    <!-- RESULTAAT -->
+    <section
+        id="resultCard"
+        class="card hidden"
+    >
 
         <h2>✅ Klaar!</h2>
 
-        <p>Je 3D-video is gemaakt.</p>
+        <p>
+            Je 3D-video is gemaakt.
+        </p>
 
-        <a id="downloadButton" class="download-button">
+        <a
+            id="downloadButton"
+            class="download-button"
+        >
             ⬇️ Download 3D-video
         </a>
 
     </section>
 
 </main>
+
 
 <script src="script.js"></script>
 
