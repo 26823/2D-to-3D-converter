@@ -1,5 +1,10 @@
 "use strict";
 
+import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
+import { fetchFile, toBlobURL } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
+
+const ffmpeg = new FFmpeg();
+let ffmpegLoaded = false;
 
 /* ========================================
    ELEMENTEN
