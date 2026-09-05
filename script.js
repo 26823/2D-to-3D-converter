@@ -761,44 +761,176 @@ exportButton.addEventListener(
         ==================================== */
 
         mediaRecorder.onstop =
-            function () {
+    async function () {
 
-                const blob =
-                    new Blob(
-                        recordedChunks,
-                        {
-                            type:
-                                "video/webm"
-                        }
-                    );
+        try {
 
+            statusText.textContent =
+                "⏳ Video wordt omgezet naar MP4...";
 
-                const url =
-                    URL.createObjectURL(
-                        blob
-                    );
+            exportButton.textContent =
+                "⏳ MP4 maken...";
 
 
-                downloadButton.href =
-                    url;
+            /* ====================================
+               WEBM MAKEN
+            ==================================== */
 
-
-                downloadButton.download =
-                    "3D-anaglyph-video.webm";
-
-
-                resultCard.classList.remove(
-                    "hidden"
+            const webmBlob =
+                new Blob(
+                    recordedChunks,
+                    {
+                        type: "video/webm"
+                    }
                 );
 
 
+            /* ====================================
+               FFMPEG LADEN
+            ==================================== */
+
+            if (!ffmpegLoaded) {
+
                 statusText.textContent =
-                    "3D-video klaar!";
+                    "⏳ MP4-converter wordt geladen...";
+
+                const baseURL =
+                    "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
+
+                await ffmpeg.load({
+
+                    coreURL:
+                        await toBlobURL(
+                            `${baseURL}/ffmpeg-core.js`,
+                            "text/javascript"
+                        ),
+
+                    wasmURL:
+                        await toBlobURL(
+                            `${baseURL}/ffmpeg-core.wasm`,
+                            "application/wasm"
+                        )
+
+                });
+
+                ffmpegLoaded = true;
+
+            }
 
 
-                resetExportButton();
+            /* ====================================
+               WEBM IN FFMPEG ZETTEN
+            ==================================== */
 
-            };
+            await ffmpeg.writeFile(
+                "input.webm",
+                await fetchFile(webmBlob)
+            );
+
+
+            /* ====================================
+               MP4 MAKEN
+            ==================================== */
+
+            statusText.textContent =
+                "⏳ MP4 wordt gemaakt...";
+
+
+            await ffmpeg.exec([
+
+                "-i",
+                "input.webm",
+
+                "-c:v",
+                "libx264",
+
+                "-preset",
+                "ultrafast",
+
+                "-pix_fmt",
+                "yuv420p",
+
+                "-movflags",
+                "+faststart",
+
+                "-an",
+
+                "output.mp4"
+
+            ]);
+
+
+            /* ====================================
+               MP4 UITLEZEN
+            ==================================== */
+
+            const data =
+                await ffmpeg.readFile(
+                    "output.mp4"
+                );
+
+
+            const mp4Blob =
+                new Blob(
+                    [data.buffer],
+                    {
+                        type: "video/mp4"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    mp4Blob
+                );
+
+
+            /* ====================================
+               DOWNLOAD
+            ==================================== */
+
+            downloadButton.href =
+                url;
+
+            downloadButton.download =
+                "3D-anaglyph-video.mp4";
+
+
+            resultCard.classList.remove(
+                "hidden"
+            );
+
+
+            statusText.textContent =
+                "✅ 3D MP4-video klaar!";
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "MP4 conversie fout:",
+                error
+            );
+
+            statusText.textContent =
+                "❌ MP4 maken mislukt.";
+
+            alert(
+                "De video kon niet naar MP4 worden omgezet.\n\n" +
+                "Bekijk de fout in de console."
+            );
+
+        }
+
+        finally {
+
+            resetExportButton();
+
+        }
+
+    };
 
 
         /* ====================================
