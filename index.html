@@ -1,10 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🔴🔵 3D Video Maker</title>
+<title>Rood-Blauw 3D Video Maker</title>
 
 <style>
 * {
@@ -14,8 +15,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background:
-        radial-gradient(circle at top, #252525, #090909 70%);
+    background: #0d0d0d;
     color: white;
     font-family: Arial, sans-serif;
 
@@ -25,22 +25,17 @@ body {
 }
 
 .container {
-    width: 900px;
+    width: 850px;
     max-width: 94%;
+    background: #1b1b1b;
     padding: 35px;
-
-    background: rgba(30,30,30,.96);
-    border: 1px solid #333;
-    border-radius: 24px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.7);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px #000;
 }
 
 h1 {
     text-align: center;
-    font-size: 36px;
-    margin: 0 0 10px;
+    margin-top: 0;
 }
 
 .subtitle {
@@ -53,26 +48,24 @@ h1 {
     border: 3px dashed #555;
     border-radius: 18px;
     padding: 65px 20px;
-
     text-align: center;
     cursor: pointer;
-
-    background: #121212;
+    background: #111;
     transition: .2s;
 }
 
 #dropZone:hover,
 #dropZone.drag {
     border-color: white;
-    background: #1d1d1d;
+    background: #222;
 }
 
-.dropTitle {
-    font-size: 23px;
+.big {
+    font-size: 24px;
     font-weight: bold;
 }
 
-.dropSmall {
+.small {
     color: #888;
     margin-top: 10px;
 }
@@ -87,21 +80,17 @@ h1 {
     word-break: break-word;
 }
 
-video {
-    display: none;
+#preview {
     width: 100%;
-    max-height: 500px;
-
     margin-top: 25px;
-
+    border-radius: 14px;
     background: black;
-    border-radius: 15px;
+    display: none;
 }
 
 button {
     width: 100%;
     margin-top: 25px;
-
     padding: 16px;
 
     border: none;
@@ -116,48 +105,30 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    transform: translateY(-1px);
-}
-
 button:disabled {
     opacity: .4;
     cursor: not-allowed;
 }
 
-.progressBox {
-    margin-top: 25px;
-}
-
-.progressText {
-    display: flex;
-    justify-content: space-between;
-
-    color: #aaa;
-    font-size: 14px;
-
-    margin-bottom: 8px;
-}
-
 .progress {
     width: 100%;
     height: 15px;
+    margin-top: 25px;
 
     background: #333;
     border-radius: 20px;
-
     overflow: hidden;
 }
 
-#progressBar {
-    height: 100%;
+#bar {
     width: 0%;
+    height: 100%;
 
     background: linear-gradient(
         90deg,
-        #ff3030,
-        #ffffff,
-        #30bfff
+        red,
+        white,
+        cyan
     );
 
     transition: width .15s;
@@ -165,23 +136,20 @@ button:disabled {
 
 #status {
     text-align: center;
-    min-height: 24px;
-
-    margin-top: 15px;
-    color: #bbb;
+    margin-top: 14px;
+    color: #aaa;
+    min-height: 22px;
 }
 
 #download {
     display: none;
-
-    width: 100%;
 
     margin-top: 20px;
     padding: 16px;
 
     border-radius: 12px;
 
-    background: #202020;
+    background: #252525;
     color: white;
 
     text-align: center;
@@ -190,30 +158,27 @@ button:disabled {
     font-weight: bold;
 }
 
-.info {
-    margin-top: 25px;
-
-    color: #777;
-    font-size: 13px;
-    line-height: 1.6;
-    text-align: center;
-}
-
 #log {
     display: none;
-
     margin-top: 15px;
-
-    padding: 10px;
-
-    max-height: 100px;
-    overflow: auto;
+    padding: 12px;
 
     background: #090909;
-    border-radius: 8px;
+    border-radius: 10px;
+
+    color: #777;
+    font-size: 12px;
+
+    white-space: pre-wrap;
+}
+
+.info {
+    text-align: center;
+    margin-top: 25px;
 
     color: #666;
-    font-size: 11px;
+    font-size: 13px;
+    line-height: 1.6;
 }
 </style>
 </head>
@@ -222,96 +187,88 @@ button:disabled {
 
 <div class="container">
 
-    <h1>🔴🔵 3D Video Maker</h1>
+<h1>🔴🔵 Rood-Blauw 3D</h1>
 
-    <div class="subtitle">
-        Maak van een normale video een rood-blauwe 3D-video
+<div class="subtitle">
+    Maak van je normale MP4 een rood-blauwe 3D-video
+</div>
+
+
+<div id="dropZone">
+
+    <div class="big">
+        🎬 Sleep je MP4 hierheen
     </div>
 
-    <div id="dropZone">
-
-        <div class="dropTitle">
-            🎬 Sleep je MP4 hierheen
-        </div>
-
-        <div class="dropSmall">
-            of klik om een video te kiezen
-        </div>
-
-        <div id="fileName"></div>
-
+    <div class="small">
+        of klik om een video te kiezen
     </div>
 
-    <input
-        type="file"
-        id="fileInput"
-        accept="video/*,.mp4"
-    >
-
-    <video
-        id="preview"
-        controls
-    ></video>
-
-    <button
-        id="convertButton"
-        disabled
-    >
-        🔴🔵 Maak 3D-video
-    </button>
-
-    <div class="progressBox">
-
-        <div class="progressText">
-            <span id="status">Geen video gekozen</span>
-            <span id="percent">0%</span>
-        </div>
-
-        <div class="progress">
-            <div id="progressBar"></div>
-        </div>
-
-    </div>
-
-    <div id="log"></div>
-
-    <a
-        id="download"
-        download
-    >
-        ⬇️ Download 3D-video
-    </a>
-
-    <div class="info">
-
-        De verwerking gebeurt lokaal in je browser.
-        <br>
-
-        Gebruik een rood-blauwe/anaglyph 3D-bril.
-        <br><br>
-
-        ⚠️ Een lange video kan enkele minuten duren om te verwerken.
-
-    </div>
+    <div id="fileName"></div>
 
 </div>
 
 
-<!-- FFmpeg.wasm -->
-<script type="module">
-
-import { FFmpeg }
-    from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm";
-
-import {
-    fetchFile,
-    toBlobURL
-} from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/+esm";
+<input
+    type="file"
+    id="fileInput"
+    accept="video/mp4,video/*"
+>
 
 
-/* ==============================
-   ELEMENTEN
-============================== */
+<video
+    id="preview"
+    controls
+></video>
+
+
+<button
+    id="convert"
+    disabled
+>
+    🔴🔵 Maak 3D-video
+</button>
+
+
+<div class="progress">
+
+    <div id="bar"></div>
+
+</div>
+
+
+<div id="status">
+    Kies eerst een video.
+</div>
+
+
+<a
+    id="download"
+    download
+>
+    ⬇️ Download 3D-video
+</a>
+
+
+<div id="log"></div>
+
+
+<div class="info">
+
+    Werkt volledig in je browser.
+    <br>
+    Je video wordt niet naar een server gestuurd.
+    <br><br>
+    Gebruik een rood-blauwe/anaglyph 3D-bril.
+
+</div>
+
+</div>
+
+
+<script src="ffmpeg-core.js"></script>
+
+<script>
 
 const dropZone =
     document.getElementById("dropZone");
@@ -325,14 +282,11 @@ const fileName =
 const preview =
     document.getElementById("preview");
 
-const convertButton =
-    document.getElementById("convertButton");
+const convert =
+    document.getElementById("convert");
 
-const progressBar =
-    document.getElementById("progressBar");
-
-const percent =
-    document.getElementById("percent");
+const bar =
+    document.getElementById("bar");
 
 const status =
     document.getElementById("status");
@@ -344,207 +298,36 @@ const log =
     document.getElementById("log");
 
 
-/* ==============================
-   VARIABLES
-============================== */
-
-const ffmpeg = new FFmpeg();
-
 let selectedFile = null;
 
-let ffmpegLoaded = false;
 
-let lastOutputURL = null;
+/* ============================
+   VIDEO KIEZEN
+============================ */
 
+dropZone.onclick = () => {
 
-/* ==============================
-   FFmpeg LOG
-============================== */
+    fileInput.click();
 
-ffmpeg.on("log", ({ message }) => {
-
-    log.textContent = message;
-
-});
+};
 
 
-/* ==============================
-   FFmpeg PROGRESS
-============================== */
+fileInput.onchange = () => {
 
-ffmpeg.on(
-    "progress",
-    ({ progress }) => {
+    if (fileInput.files.length > 0) {
 
-        /*
-           FFmpeg kan tijdens bepaalde
-           filters niet altijd een perfecte
-           voortgang geven.
-
-           Daarom houden we hem onder 99%
-           totdat het bestand daadwerkelijk
-           klaar is.
-        */
-
-        const value =
-            Math.min(
-                99,
-                Math.max(
-                    0,
-                    Math.round(progress * 100)
-                )
-            );
-
-        progressBar.style.width =
-            value + "%";
-
-        percent.textContent =
-            value + "%";
-
-    }
-);
-
-
-/* ==============================
-   FFmpeg LADEN
-============================== */
-
-async function loadFFmpeg() {
-
-    if (ffmpegLoaded) {
-        return;
-    }
-
-    status.textContent =
-        "FFmpeg wordt geladen...";
-
-    percent.textContent =
-        "0%";
-
-    const baseURL =
-        "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
-
-
-    /*
-       toBlobURL voorkomt problemen met
-       cross-origin laden van de FFmpeg core.
-    */
-
-    await ffmpeg.load({
-
-        coreURL:
-            await toBlobURL(
-                `${baseURL}/ffmpeg-core.js`,
-                "text/javascript"
-            ),
-
-        wasmURL:
-            await toBlobURL(
-                `${baseURL}/ffmpeg-core.wasm`,
-                "application/wasm"
-            )
-
-    });
-
-
-    ffmpegLoaded = true;
-
-    status.textContent =
-        "FFmpeg klaar.";
-
-}
-
-
-/* ==============================
-   VIDEO LADEN
-============================== */
-
-function loadVideo(file) {
-
-    if (!file.type.startsWith("video/")) {
-
-        alert(
-            "Kies een videobestand."
+        selectVideo(
+            fileInput.files[0]
         );
 
-        return;
     }
 
-
-    selectedFile = file;
-
-
-    fileName.textContent =
-        "🎬 " + file.name;
+};
 
 
-    const url =
-        URL.createObjectURL(file);
-
-
-    preview.src = url;
-
-    preview.style.display =
-        "block";
-
-
-    convertButton.disabled =
-        false;
-
-
-    download.style.display =
-        "none";
-
-
-    progressBar.style.width =
-        "0%";
-
-    percent.textContent =
-        "0%";
-
-    status.textContent =
-        "Video klaar.";
-
-}
-
-
-/* ==============================
-   KLIK OP DROPZONE
-============================== */
-
-dropZone.addEventListener(
-    "click",
-    () => {
-
-        fileInput.click();
-
-    }
-);
-
-
-/* ==============================
-   BESTAND GEKOZEN
-============================== */
-
-fileInput.addEventListener(
-    "change",
-    () => {
-
-        if (fileInput.files.length) {
-
-            loadVideo(
-                fileInput.files[0]
-            );
-
-        }
-
-    }
-);
-
-
-/* ==============================
+/* ============================
    DRAG & DROP
-============================== */
+============================ */
 
 dropZone.addEventListener(
     "dragover",
@@ -580,293 +363,404 @@ dropZone.addEventListener(
             event.dataTransfer.files[0];
 
         if (file) {
-            loadVideo(file);
+
+            selectVideo(file);
+
         }
 
     }
 );
 
 
-/* ==============================
-   3D MAKEN
-============================== */
+/* ============================
+   VIDEO SELECTEREN
+============================ */
 
-convertButton.addEventListener(
-    "click",
-    async () => {
+function selectVideo(file) {
 
-        if (!selectedFile) {
-            return;
-        }
+    if (!file.type.startsWith("video/")) {
+
+        alert(
+            "Kies een videobestand."
+        );
+
+        return;
+
+    }
+
+    selectedFile = file;
+
+    fileName.textContent =
+        "🎬 " + file.name;
 
 
-        convertButton.disabled =
-            true;
+    preview.src =
+        URL.createObjectURL(file);
 
-        download.style.display =
-            "none";
+    preview.style.display =
+        "block";
 
 
-        try {
+    convert.disabled = false;
+
+    download.style.display =
+        "none";
+
+
+    bar.style.width =
+        "0%";
+
+
+    status.textContent =
+        "Video klaar.";
+
+}
+
+
+/* ============================
+   FFMPEG
+============================ */
+
+let ffmpeg = null;
+
+
+async function loadFFmpeg() {
+
+    if (ffmpeg) {
+
+        return ffmpeg;
+
+    }
+
+
+    status.textContent =
+        "FFmpeg wordt geladen...";
+
+
+    /*
+       ffmpeg-core.js wordt lokaal
+       geladen.
+
+       Hierdoor wordt niet meer
+       de jsDelivr worker gebruikt.
+    */
+
+    if (
+        typeof FFmpegWASM === "undefined"
+    ) {
+
+        throw new Error(
+            "ffmpeg-core.js is niet correct geladen."
+        );
+
+    }
+
+
+    ffmpeg =
+        new FFmpegWASM.FFmpeg();
+
+
+    ffmpeg.on(
+        "progress",
+        ({ progress }) => {
+
+            let p =
+                Math.round(
+                    progress * 100
+                );
 
             /*
-               FFmpeg laden
+               100% pas tonen wanneer
+               FFmpeg echt klaar is.
             */
 
+            p = Math.min(99, p);
+
+            bar.style.width =
+                p + "%";
+
+            status.textContent =
+                "Bezig... " + p + "%";
+
+        }
+    );
+
+
+    ffmpeg.on(
+        "log",
+        ({ message }) => {
+
+            log.textContent =
+                message;
+
+        }
+    );
+
+
+    await ffmpeg.load({
+        coreURL:
+            "./ffmpeg-core.js"
+    });
+
+
+    return ffmpeg;
+
+}
+
+
+/* ============================
+   CONVERTEREN
+============================ */
+
+convert.onclick = async () => {
+
+    if (!selectedFile) {
+        return;
+    }
+
+
+    convert.disabled = true;
+
+    download.style.display =
+        "none";
+
+    bar.style.width =
+        "0%";
+
+
+    try {
+
+        const engine =
             await loadFFmpeg();
 
 
-            status.textContent =
-                "Video voorbereiden...";
+        status.textContent =
+            "Video wordt voorbereid...";
 
 
-            progressBar.style.width =
-                "1%";
+        /*
+           Bestandsnamen
+        */
 
-            percent.textContent =
-                "1%";
+        const input =
+            "input.mp4";
 
-
-            /*
-               Input-bestand naar FFmpeg
-            */
-
-            const inputName =
-                "input.mp4";
-
-            const outputName =
-                "3D_output.mp4";
+        const output =
+            "output.mp4";
 
 
-            await ffmpeg.writeFile(
-                inputName,
-                await fetchFile(selectedFile)
+        /*
+           Video naar FFmpeg schrijven
+        */
+
+        await engine.writeFile(
+            input,
+            await fetchFile(
+                selectedFile
+            )
+        );
+
+
+        /*
+           Anaglyph filter.
+
+           Rood:
+           linkerbeeld
+
+           Cyaan:
+           rechterbeeld
+        */
+
+        const filter =
+
+            "[0:v]split=2[a][b];" +
+
+            "[a]" +
+            "crop=iw-12:ih:0:0," +
+            "pad=iw:ih:6:0:black," +
+            "colorchannelmixer=" +
+            "rr=1:rg=0:rb=0:" +
+            "gr=0:gg=0:gb=0:" +
+            "br=0:bg=0:bb=0" +
+            "[red];" +
+
+            "[b]" +
+            "crop=iw-12:ih:12:0," +
+            "pad=iw:ih:0:0:black," +
+            "colorchannelmixer=" +
+            "rr=0:rg=0:rb=0:" +
+            "gr=0:gg=1:gb=0:" +
+            "br=0:bg=0:bb=1" +
+            "[cyan];" +
+
+            "[red][cyan]" +
+            "blend=all_mode=screen," +
+            "format=yuv420p[v]";
+
+
+        status.textContent =
+            "🔴🔵 3D-video wordt gemaakt...";
+
+
+        /*
+           Conversie
+
+           -c:a copy probeert audio
+           rechtstreeks over te nemen.
+
+           Als dat niet lukt gebruiken we
+           AAC.
+        */
+
+        await engine.exec([
+
+            "-i",
+            input,
+
+            "-filter_complex",
+            filter,
+
+            "-map",
+            "[v]",
+
+            "-map",
+            "0:a?",
+
+            "-c:v",
+            "libx264",
+
+            "-preset",
+            "ultrafast",
+
+            "-crf",
+            "20",
+
+            "-pix_fmt",
+            "yuv420p",
+
+            "-c:a",
+            "aac",
+
+            "-b:a",
+            "192k",
+
+            "-shortest",
+
+            "-movflags",
+            "+faststart",
+
+            output
+
+        ]);
+
+
+        status.textContent =
+            "Bestand wordt klaargemaakt...";
+
+
+        /*
+           Output lezen
+        */
+
+        const data =
+            await engine.readFile(
+                output
             );
 
 
-            /*
-               Anaglyph filter.
-
-               De linkerhelft wordt iets
-               verschoven voor het rode kanaal.
-
-               De rechterhelft wordt iets
-               verschoven voor cyaan.
-
-               Vervolgens combineren we:
-               R = links
-               G+B = rechts
-            */
+        const blob =
+            new Blob(
+                [data.buffer],
+                {
+                    type: "video/mp4"
+                }
+            );
 
 
-            const filter = [
-
-                "[0:v]split=2[left][right]",
-
-                "[left]crop=iw-8:ih:0:0,"
-                + "pad=iw+8:ih:8:0:black,"
-                + "colorchannelmixer="
-                + "rr=1:rg=0:rb=0:"
-                + "gr=0:gg=0:gb=0:"
-                + "br=0:bg=0:bb=0"
-                + "[red]",
-
-                "[right]crop=iw-8:ih:8:0,"
-                + "pad=iw+8:ih:8:0:black,"
-                + "colorchannelmixer="
-                + "rr=0:rg=0:rb=0:"
-                + "gr=0:gg=1:gb=0:"
-                + "br=0:bg=0:bb=1"
-                + "[cyan]",
-
-                "[red][cyan]blend="
-                + "all_mode=screen,"
-                + "format=yuv420p"
-                + "[v]"
-
-            ].join(";");
+        const url =
+            URL.createObjectURL(blob);
 
 
-            status.textContent =
-                "🔴🔵 3D-video wordt gemaakt...";
+        /*
+           Download
+        */
 
-
-            /*
-               De audio wordt rechtstreeks
-               van de originele video gehaald.
-
-               Daardoor blijft het geluid
-               synchroon met de video.
-            */
-
-            await ffmpeg.exec([
-
-                "-i",
-                inputName,
-
-                "-filter_complex",
-                filter,
-
-                "-map",
-                "[v]",
-
-                "-map",
-                "0:a?",
-
-                "-c:v",
-                "libx264",
-
-                "-preset",
-                "veryfast",
-
-                "-crf",
-                "20",
-
-                "-pix_fmt",
-                "yuv420p",
-
-                "-c:a",
-                "aac",
-
-                "-b:a",
-                "192k",
-
-                "-shortest",
-
-                "-movflags",
-                "+faststart",
-
-                outputName
-
-            ]);
-
-
-            /*
-               Output ophalen
-            */
-
-            status.textContent =
-                "Bestand wordt klaargemaakt...";
-
-
-            const data =
-                await ffmpeg.readFile(
-                    outputName
+        const name =
+            selectedFile.name
+                .replace(
+                    /\.[^/.]+$/,
+                    ""
                 );
 
 
-            /*
-               Oude URL opruimen
-            */
+        download.href =
+            url;
 
-            if (lastOutputURL) {
-
-                URL.revokeObjectURL(
-                    lastOutputURL
-                );
-
-            }
+        download.download =
+            name + "_3D.mp4";
 
 
-            const blob =
-                new Blob(
-                    [data.buffer],
-                    {
-                        type: "video/mp4"
-                    }
-                );
+        download.style.display =
+            "block";
 
 
-            lastOutputURL =
-                URL.createObjectURL(blob);
+        /*
+           NU pas 100%.
+        */
+
+        bar.style.width =
+            "100%";
+
+        status.textContent =
+            "✅ Helemaal klaar!";
 
 
-            /*
-               Downloadlink
-            */
+        /*
+           Tijdelijke bestanden verwijderen
+        */
 
-            download.href =
-                lastOutputURL;
+        try {
 
+            await engine.deleteFile(
+                input
+            );
 
-            const originalName =
-                selectedFile.name
-                    .replace(
-                        /\.[^/.]+$/,
-                        ""
-                    );
+            await engine.deleteFile(
+                output
+            );
 
+        } catch (e) {
 
-            download.download =
-                originalName + "_3D.mp4";
-
-
-            download.style.display =
-                "block";
-
-
-            /*
-               Nu pas echt 100%.
-            */
-
-            progressBar.style.width =
-                "100%";
-
-            percent.textContent =
-                "100%";
-
-            status.textContent =
-                "✅ Helemaal klaar!";
-
-
-            /*
-               FFmpeg tijdelijke bestanden
-               opruimen.
-            */
-
-            try {
-
-                await ffmpeg.deleteFile(
-                    inputName
-                );
-
-                await ffmpeg.deleteFile(
-                    outputName
-                );
-
-            } catch (e) {
-
-                console.log(
-                    "Opruimen:",
-                    e
-                );
-
-            }
-
-        } catch (error) {
-
-            console.error(error);
-
-            status.textContent =
-                "❌ Er ging iets mis.";
-
-            log.style.display =
-                "block";
-
-            log.textContent =
-                error.message ||
-                String(error);
+            console.log(e);
 
         }
 
+    } catch (error) {
 
-        convertButton.disabled =
-            false;
+        console.error(error);
+
+        status.textContent =
+            "❌ Er ging iets mis.";
+
+        log.style.display =
+            "block";
+
+        log.textContent =
+            error.message ||
+            String(error);
+
+        bar.style.width =
+            "0%";
 
     }
-);
+
+
+    convert.disabled = false;
+
+};
 
 </script>
 
 </body>
 </html>
+```
