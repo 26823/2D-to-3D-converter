@@ -1,367 +1,114 @@
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>3D Anaglyph Converter</title>
-
-    <meta name="description"
-          content="Zet normale video's om naar rood-cyaan 3D anaglyph video's in je browser.">
-
+    <title>2D → 3D Anaglyph Converter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        <span class="logo-red">3D</span>
-        <span>Anaglyph</span>
-    </div>
-
-    <div class="header-badge">
-        100% lokaal
-    </div>
+<header>
+    <h1>🎬 2D → 3D</h1>
+    <p>Maak van een normale video een rood/cyaan 3D-video</p>
 </header>
 
+<main>
 
-<main class="container">
+    <!-- VIDEO KIEZEN -->
+    <section class="card">
+        <h2>1. Kies je video</h2>
 
-    <section class="hero">
-        <div class="hero-badge">🎬 VIDEO CONVERTER</div>
+        <input
+            type="file"
+            id="videoInput"
+            accept="video/*"
+        >
 
-        <h1>
-            Maak van je video
-            <span>3D</span>
-        </h1>
+        <label for="videoInput" class="upload-button">
+            🎥 Video kiezen
+        </label>
 
-        <p>
-            Upload een normale video en maak er een
-            rood/cyaan 3D-anaglyph van.
+        <p id="fileName">Nog geen video gekozen</p>
+
+        <p class="small">
+            Je video wordt lokaal in je browser verwerkt.
         </p>
     </section>
 
-
-    <section class="converter">
-
-        <!-- Upload -->
-        <div class="upload-box" id="uploadBox">
-
-            <div class="upload-icon">
-                🎥
-            </div>
-
-            <h2>Upload je video</h2>
-
-            <p>
-                Sleep een video hierheen of kies een bestand.
-            </p>
-
-            <input
-                type="file"
-                id="videoInput"
-                accept="video/*"
-                hidden
-            >
-
-            <button
-                class="primary-button"
-                id="selectButton"
-                type="button">
-                Video kiezen
-            </button>
-
-            <div class="supported">
-                MP4 · WebM · MOV · AVI* · andere videoformaten
-            </div>
-
-        </div>
-
-
-        <!-- Editor -->
-        <div class="editor" id="editor">
-
-            <div class="video-area">
-
-                <div class="video-title">
-                    <span>VOORBEELD</span>
-
-                    <span id="status">
-                        Klaar
-                    </span>
-                </div>
-
-                <div class="video-wrapper">
-
-                    <video
-                        id="sourceVideo"
-                        playsinline
-                        preload="metadata">
-                    </video>
-
-                    <canvas id="previewCanvas"></canvas>
-
-                    <div
-                        class="video-placeholder"
-                        id="videoPlaceholder">
-                        Upload eerst een video
-                    </div>
-
-                </div>
-
-
-                <div class="video-controls">
-
-                    <button
-                        id="playButton"
-                        class="control-button"
-                        type="button">
-                        ▶ Afspelen
-                    </button>
-
-                    <button
-                        id="pauseButton"
-                        class="control-button"
-                        type="button">
-                        ⏸ Pauze
-                    </button>
-
-                    <button
-                        id="stopButton"
-                        class="control-button"
-                        type="button">
-                        ⏹ Stop
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- Settings -->
-            <aside class="settings">
-
-                <h2>3D-instellingen</h2>
-
-                <div class="setting">
-
-                    <div class="setting-header">
-                        <label for="depth">
-                            3D-diepte
-                        </label>
-
-                        <strong>
-                            <span id="depthValue">12</span> px
-                        </strong>
-                    </div>
-
-                    <input
-                        id="depth"
-                        type="range"
-                        min="0"
-                        max="40"
-                        value="12"
-                        step="1"
-                    >
-
-                    <small>
-                        Meer diepte = sterker 3D-effect
-                    </small>
-
-                </div>
-
-
-                <div class="setting">
-
-                    <div class="setting-header">
-                        <label for="strength">
-                            Effectsterkte
-                        </label>
-
-                        <strong>
-                            <span id="strengthValue">100</span>%
-                        </strong>
-                    </div>
-
-                    <input
-                        id="strength"
-                        type="range"
-                        min="0"
-                        max="100"
-                        value="100"
-                        step="1"
-                    >
-
-                </div>
-
-
-                <div class="setting">
-
-                    <label for="quality">
-                        Exportkwaliteit
-                    </label>
-
-                    <select id="quality">
-
-                        <option value="0.5">
-                            Laag - sneller
-                        </option>
-
-                        <option value="0.75" selected>
-                            Normaal
-                        </option>
-
-                        <option value="0.9">
-                            Hoog
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="info-box">
-
-                    <strong>🔴 Gebruik een rood/cyaan bril</strong>
-
-                    <p>
-                        Het linkeroog gebruikt rood en het
-                        rechteroog gebruikt cyaan.
-                    </p>
-
-                </div>
-
-
-                <button
-                    id="exportButton"
-                    class="export-button"
-                    type="button"
-                    disabled>
-
-                    🎬 3D-video maken
-
-                </button>
-
-                <button
-                    id="resetButton"
-                    class="reset-button"
-                    type="button">
-
-                    Instellingen resetten
-
-                </button>
-
-            </aside>
-
-        </div>
-
-
-        <!-- Progress -->
-        <div class="progress-section" id="progressSection">
-
-            <div class="progress-top">
-
-                <strong>
-                    3D-video wordt gemaakt...
-                </strong>
-
-                <span id="progressText">
-                    0%
-                </span>
-
-            </div>
-
-            <div class="progress-bar">
-                <div
-                    id="progressBar"
-                    class="progress-fill">
-                </div>
-            </div>
-
-            <p id="progressStatus">
-                Video voorbereiden...
-            </p>
-
-        </div>
-
-
-        <!-- Result -->
-        <div class="result" id="result">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <h2>Je 3D-video is klaar!</h2>
-
-            <p>
-                De video is lokaal in je browser gemaakt.
-            </p>
-
-            <a
-                id="downloadButton"
-                class="download-button"
-                download="3d-anaglyph-video.webm">
-
-                ⬇ Video downloaden
-
-            </a>
-
-        </div>
+    <!-- VIDEO -->
+    <section class="card">
+        <h2>2. Voorbeeld</h2>
+
+        <video id="sourceVideo" controls playsinline></video>
+
+        <canvas id="canvas"></canvas>
+
+        <p id="status">Wacht op een video...</p>
+    </section>
+
+    <!-- INSTELLINGEN -->
+    <section class="card">
+        <h2>3. 3D-instellingen</h2>
+
+        <label>
+            Diepte:
+            <strong><span id="depthValue">8</span> px</strong>
+        </label>
+
+        <input
+            type="range"
+            id="depth"
+            min="0"
+            max="30"
+            value="8"
+        >
+
+        <label>
+            Sterkte:
+            <strong><span id="strengthValue">1.0</span></strong>
+        </label>
+
+        <input
+            type="range"
+            id="strength"
+            min="0"
+            max="2"
+            value="1"
+            step="0.1"
+        >
+    </section>
+
+    <!-- BEDIENING -->
+    <section class="card controls">
+
+        <button id="playButton">▶ Afspelen</button>
+        <button id="pauseButton">⏸ Pauze</button>
+        <button id="stopButton">⏹ Stop</button>
+
+        <button id="exportButton" class="export">
+            🎞️ 3D-video maken
+        </button>
 
     </section>
 
+    <!-- DOWNLOAD -->
+    <section id="resultCard" class="card hidden">
 
-    <section class="how">
+        <h2>✅ Klaar!</h2>
 
-        <h2>Hoe werkt het?</h2>
+        <p>Je 3D-video is gemaakt.</p>
 
-        <div class="steps">
-
-            <div class="step">
-                <div>1</div>
-                <h3>Upload</h3>
-                <p>
-                    Kies een normale video vanaf je computer.
-                </p>
-            </div>
-
-            <div class="step">
-                <div>2</div>
-                <h3>Stel diepte in</h3>
-                <p>
-                    Gebruik de schuifregelaar om het
-                    3D-effect sterker of zwakker te maken.
-                </p>
-            </div>
-
-            <div class="step">
-                <div>3</div>
-                <h3>Maak 3D</h3>
-                <p>
-                    De browser verwerkt de beelden en maakt
-                    een rood/cyaan anaglyph-video.
-                </p>
-            </div>
-
-        </div>
+        <a id="downloadButton" class="download-button">
+            ⬇️ Download 3D-video
+        </a>
 
     </section>
 
 </main>
 
-
-<footer>
-    <p>
-        3D Anaglyph Converter · Verwerking gebeurt lokaal in je browser
-    </p>
-</footer>
-
-
 <script src="script.js"></script>
 
 </body>
 </html>
-```
