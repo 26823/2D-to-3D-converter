@@ -1,4 +1,3 @@
-```javascript
 /*
     3D ANAGLYPH VIDEO CONVERTER
     ----------------------------
@@ -1234,4 +1233,4 @@ depthValue.textContent =
 
 strengthValue.textContent =
     strengthSlider.value;
-```
+
