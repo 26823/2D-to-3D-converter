@@ -1,766 +1,365 @@
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rood-Blauw 3D Video Maker</title>
+    <title>3D Anaglyph Converter</title>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <meta name="description"
+          content="Zet normale video's om naar rood-cyaan 3D anaglyph video's in je browser.">
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: #0d0d0d;
-    color: white;
-    font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    width: 850px;
-    max-width: 94%;
-    background: #1b1b1b;
-    padding: 35px;
-    border-radius: 22px;
-    box-shadow: 0 20px 60px #000;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 0;
-}
-
-.subtitle {
-    text-align: center;
-    color: #999;
-    margin-bottom: 30px;
-}
-
-#dropZone {
-    border: 3px dashed #555;
-    border-radius: 18px;
-    padding: 65px 20px;
-    text-align: center;
-    cursor: pointer;
-    background: #111;
-    transition: .2s;
-}
-
-#dropZone:hover,
-#dropZone.drag {
-    border-color: white;
-    background: #222;
-}
-
-.big {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.small {
-    color: #888;
-    margin-top: 10px;
-}
-
-#fileInput {
-    display: none;
-}
-
-#fileName {
-    margin-top: 18px;
-    color: #aaa;
-    word-break: break-word;
-}
-
-#preview {
-    width: 100%;
-    margin-top: 25px;
-    border-radius: 14px;
-    background: black;
-    display: none;
-}
-
-button {
-    width: 100%;
-    margin-top: 25px;
-    padding: 16px;
-
-    border: none;
-    border-radius: 12px;
-
-    background: white;
-    color: black;
-
-    font-size: 17px;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-button:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-}
-
-.progress {
-    width: 100%;
-    height: 15px;
-    margin-top: 25px;
-
-    background: #333;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-#bar {
-    width: 0%;
-    height: 100%;
-
-    background: linear-gradient(
-        90deg,
-        red,
-        white,
-        cyan
-    );
-
-    transition: width .15s;
-}
-
-#status {
-    text-align: center;
-    margin-top: 14px;
-    color: #aaa;
-    min-height: 22px;
-}
-
-#download {
-    display: none;
-
-    margin-top: 20px;
-    padding: 16px;
-
-    border-radius: 12px;
-
-    background: #252525;
-    color: white;
-
-    text-align: center;
-    text-decoration: none;
-
-    font-weight: bold;
-}
-
-#log {
-    display: none;
-    margin-top: 15px;
-    padding: 12px;
-
-    background: #090909;
-    border-radius: 10px;
-
-    color: #777;
-    font-size: 12px;
-
-    white-space: pre-wrap;
-}
-
-.info {
-    text-align: center;
-    margin-top: 25px;
-
-    color: #666;
-    font-size: 13px;
-    line-height: 1.6;
-}
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>🔴🔵 Rood-Blauw 3D</h1>
-
-<div class="subtitle">
-    Maak van je normale MP4 een rood-blauwe 3D-video
-</div>
-
-
-<div id="dropZone">
-
-    <div class="big">
-        🎬 Sleep je MP4 hierheen
+<header class="header">
+    <div class="logo">
+        <span class="logo-red">3D</span>
+        <span>Anaglyph</span>
     </div>
 
-    <div class="small">
-        of klik om een video te kiezen
+    <div class="header-badge">
+        100% lokaal
     </div>
+</header>
 
-    <div id="fileName"></div>
 
-</div>
+<main class="container">
 
+    <section class="hero">
+        <div class="hero-badge">🎬 VIDEO CONVERTER</div>
 
-<input
-    type="file"
-    id="fileInput"
-    accept="video/mp4,video/*"
->
+        <h1>
+            Maak van je video
+            <span>3D</span>
+        </h1>
 
+        <p>
+            Upload een normale video en maak er een
+            rood/cyaan 3D-anaglyph van.
+        </p>
+    </section>
 
-<video
-    id="preview"
-    controls
-></video>
 
+    <section class="converter">
 
-<button
-    id="convert"
-    disabled
->
-    🔴🔵 Maak 3D-video
-</button>
+        <!-- Upload -->
+        <div class="upload-box" id="uploadBox">
 
+            <div class="upload-icon">
+                🎥
+            </div>
 
-<div class="progress">
+            <h2>Upload je video</h2>
 
-    <div id="bar"></div>
+            <p>
+                Sleep een video hierheen of kies een bestand.
+            </p>
 
-</div>
+            <input
+                type="file"
+                id="videoInput"
+                accept="video/*"
+                hidden
+            >
 
+            <button
+                class="primary-button"
+                id="selectButton"
+                type="button">
+                Video kiezen
+            </button>
 
-<div id="status">
-    Kies eerst een video.
-</div>
+            <div class="supported">
+                MP4 · WebM · MOV · AVI* · andere videoformaten
+            </div>
 
+        </div>
 
-<a
-    id="download"
-    download
->
-    ⬇️ Download 3D-video
-</a>
 
+        <!-- Editor -->
+        <div class="editor" id="editor">
 
-<div id="log"></div>
+            <div class="video-area">
 
+                <div class="video-title">
+                    <span>VOORBEELD</span>
 
-<div class="info">
+                    <span id="status">
+                        Klaar
+                    </span>
+                </div>
 
-    Werkt volledig in je browser.
-    <br>
-    Je video wordt niet naar een server gestuurd.
-    <br><br>
-    Gebruik een rood-blauwe/anaglyph 3D-bril.
+                <div class="video-wrapper">
 
-</div>
+                    <video
+                        id="sourceVideo"
+                        playsinline
+                        preload="metadata">
+                    </video>
 
-</div>
+                    <canvas id="previewCanvas"></canvas>
 
+                    <div
+                        class="video-placeholder"
+                        id="videoPlaceholder">
+                        Upload eerst een video
+                    </div>
 
-<script src="ffmpeg-core.js"></script>
+                </div>
 
-<script>
 
-const dropZone =
-    document.getElementById("dropZone");
+                <div class="video-controls">
 
-const fileInput =
-    document.getElementById("fileInput");
+                    <button
+                        id="playButton"
+                        class="control-button"
+                        type="button">
+                        ▶ Afspelen
+                    </button>
 
-const fileName =
-    document.getElementById("fileName");
+                    <button
+                        id="pauseButton"
+                        class="control-button"
+                        type="button">
+                        ⏸ Pauze
+                    </button>
 
-const preview =
-    document.getElementById("preview");
+                    <button
+                        id="stopButton"
+                        class="control-button"
+                        type="button">
+                        ⏹ Stop
+                    </button>
 
-const convert =
-    document.getElementById("convert");
+                </div>
 
-const bar =
-    document.getElementById("bar");
+            </div>
 
-const status =
-    document.getElementById("status");
 
-const download =
-    document.getElementById("download");
+            <!-- Settings -->
+            <aside class="settings">
 
-const log =
-    document.getElementById("log");
+                <h2>3D-instellingen</h2>
 
+                <div class="setting">
 
-let selectedFile = null;
+                    <div class="setting-header">
+                        <label for="depth">
+                            3D-diepte
+                        </label>
 
+                        <strong>
+                            <span id="depthValue">12</span> px
+                        </strong>
+                    </div>
 
-/* ============================
-   VIDEO KIEZEN
-============================ */
+                    <input
+                        id="depth"
+                        type="range"
+                        min="0"
+                        max="40"
+                        value="12"
+                        step="1"
+                    >
 
-dropZone.onclick = () => {
+                    <small>
+                        Meer diepte = sterker 3D-effect
+                    </small>
 
-    fileInput.click();
+                </div>
 
-};
 
+                <div class="setting">
 
-fileInput.onchange = () => {
+                    <div class="setting-header">
+                        <label for="strength">
+                            Effectsterkte
+                        </label>
 
-    if (fileInput.files.length > 0) {
+                        <strong>
+                            <span id="strengthValue">100</span>%
+                        </strong>
+                    </div>
 
-        selectVideo(
-            fileInput.files[0]
-        );
+                    <input
+                        id="strength"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="100"
+                        step="1"
+                    >
 
-    }
+                </div>
 
-};
 
+                <div class="setting">
 
-/* ============================
-   DRAG & DROP
-============================ */
+                    <label for="quality">
+                        Exportkwaliteit
+                    </label>
 
-dropZone.addEventListener(
-    "dragover",
-    event => {
+                    <select id="quality">
 
-        event.preventDefault();
+                        <option value="0.5">
+                            Laag - sneller
+                        </option>
 
-        dropZone.classList.add("drag");
+                        <option value="0.75" selected>
+                            Normaal
+                        </option>
 
-    }
-);
+                        <option value="0.9">
+                            Hoog
+                        </option>
 
+                    </select>
 
-dropZone.addEventListener(
-    "dragleave",
-    () => {
+                </div>
 
-        dropZone.classList.remove("drag");
 
-    }
-);
+                <div class="info-box">
 
+                    <strong>🔴 Gebruik een rood/cyaan bril</strong>
 
-dropZone.addEventListener(
-    "drop",
-    event => {
+                    <p>
+                        Het linkeroog gebruikt rood en het
+                        rechteroog gebruikt cyaan.
+                    </p>
 
-        event.preventDefault();
+                </div>
 
-        dropZone.classList.remove("drag");
 
-        const file =
-            event.dataTransfer.files[0];
+                <button
+                    id="exportButton"
+                    class="export-button"
+                    type="button"
+                    disabled>
 
-        if (file) {
+                    🎬 3D-video maken
 
-            selectVideo(file);
+                </button>
 
-        }
+                <button
+                    id="resetButton"
+                    class="reset-button"
+                    type="button">
 
-    }
-);
+                    Instellingen resetten
 
+                </button>
 
-/* ============================
-   VIDEO SELECTEREN
-============================ */
+            </aside>
 
-function selectVideo(file) {
+        </div>
 
-    if (!file.type.startsWith("video/")) {
 
-        alert(
-            "Kies een videobestand."
-        );
+        <!-- Progress -->
+        <div class="progress-section" id="progressSection">
 
-        return;
+            <div class="progress-top">
 
-    }
+                <strong>
+                    3D-video wordt gemaakt...
+                </strong>
 
-    selectedFile = file;
+                <span id="progressText">
+                    0%
+                </span>
 
-    fileName.textContent =
-        "🎬 " + file.name;
+            </div>
 
+            <div class="progress-bar">
+                <div
+                    id="progressBar"
+                    class="progress-fill">
+                </div>
+            </div>
 
-    preview.src =
-        URL.createObjectURL(file);
+            <p id="progressStatus">
+                Video voorbereiden...
+            </p>
 
-    preview.style.display =
-        "block";
+        </div>
 
 
-    convert.disabled = false;
+        <!-- Result -->
+        <div class="result" id="result">
 
-    download.style.display =
-        "none";
+            <div class="success-icon">
+                ✓
+            </div>
 
+            <h2>Je 3D-video is klaar!</h2>
 
-    bar.style.width =
-        "0%";
+            <p>
+                De video is lokaal in je browser gemaakt.
+            </p>
 
+            <a
+                id="downloadButton"
+                class="download-button"
+                download="3d-anaglyph-video.webm">
 
-    status.textContent =
-        "Video klaar.";
+                ⬇ Video downloaden
 
-}
+            </a>
 
+        </div>
 
-/* ============================
-   FFMPEG
-============================ */
+    </section>
 
-let ffmpeg = null;
 
+    <section class="how">
 
-async function loadFFmpeg() {
+        <h2>Hoe werkt het?</h2>
 
-    if (ffmpeg) {
+        <div class="steps">
 
-        return ffmpeg;
+            <div class="step">
+                <div>1</div>
+                <h3>Upload</h3>
+                <p>
+                    Kies een normale video vanaf je computer.
+                </p>
+            </div>
 
-    }
+            <div class="step">
+                <div>2</div>
+                <h3>Stel diepte in</h3>
+                <p>
+                    Gebruik de schuifregelaar om het
+                    3D-effect sterker of zwakker te maken.
+                </p>
+            </div>
 
+            <div class="step">
+                <div>3</div>
+                <h3>Maak 3D</h3>
+                <p>
+                    De browser verwerkt de beelden en maakt
+                    een rood/cyaan anaglyph-video.
+                </p>
+            </div>
 
-    status.textContent =
-        "FFmpeg wordt geladen...";
+        </div>
 
+    </section>
 
-    /*
-       ffmpeg-core.js wordt lokaal
-       geladen.
+</main>
 
-       Hierdoor wordt niet meer
-       de jsDelivr worker gebruikt.
-    */
 
-    if (
-        typeof FFmpegWASM === "undefined"
-    ) {
+<footer>
+    <p>
+        3D Anaglyph Converter · Verwerking gebeurt lokaal in je browser
+    </p>
+</footer>
 
-        throw new Error(
-            "ffmpeg-core.js is niet correct geladen."
-        );
 
-    }
-
-
-    ffmpeg =
-        new FFmpegWASM.FFmpeg();
-
-
-    ffmpeg.on(
-        "progress",
-        ({ progress }) => {
-
-            let p =
-                Math.round(
-                    progress * 100
-                );
-
-            /*
-               100% pas tonen wanneer
-               FFmpeg echt klaar is.
-            */
-
-            p = Math.min(99, p);
-
-            bar.style.width =
-                p + "%";
-
-            status.textContent =
-                "Bezig... " + p + "%";
-
-        }
-    );
-
-
-    ffmpeg.on(
-        "log",
-        ({ message }) => {
-
-            log.textContent =
-                message;
-
-        }
-    );
-
-
-    await ffmpeg.load({
-        coreURL:
-            "./ffmpeg-core.js"
-    });
-
-
-    return ffmpeg;
-
-}
-
-
-/* ============================
-   CONVERTEREN
-============================ */
-
-convert.onclick = async () => {
-
-    if (!selectedFile) {
-        return;
-    }
-
-
-    convert.disabled = true;
-
-    download.style.display =
-        "none";
-
-    bar.style.width =
-        "0%";
-
-
-    try {
-
-        const engine =
-            await loadFFmpeg();
-
-
-        status.textContent =
-            "Video wordt voorbereid...";
-
-
-        /*
-           Bestandsnamen
-        */
-
-        const input =
-            "input.mp4";
-
-        const output =
-            "output.mp4";
-
-
-        /*
-           Video naar FFmpeg schrijven
-        */
-
-        await engine.writeFile(
-            input,
-            await fetchFile(
-                selectedFile
-            )
-        );
-
-
-        /*
-           Anaglyph filter.
-
-           Rood:
-           linkerbeeld
-
-           Cyaan:
-           rechterbeeld
-        */
-
-        const filter =
-
-            "[0:v]split=2[a][b];" +
-
-            "[a]" +
-            "crop=iw-12:ih:0:0," +
-            "pad=iw:ih:6:0:black," +
-            "colorchannelmixer=" +
-            "rr=1:rg=0:rb=0:" +
-            "gr=0:gg=0:gb=0:" +
-            "br=0:bg=0:bb=0" +
-            "[red];" +
-
-            "[b]" +
-            "crop=iw-12:ih:12:0," +
-            "pad=iw:ih:0:0:black," +
-            "colorchannelmixer=" +
-            "rr=0:rg=0:rb=0:" +
-            "gr=0:gg=1:gb=0:" +
-            "br=0:bg=0:bb=1" +
-            "[cyan];" +
-
-            "[red][cyan]" +
-            "blend=all_mode=screen," +
-            "format=yuv420p[v]";
-
-
-        status.textContent =
-            "🔴🔵 3D-video wordt gemaakt...";
-
-
-        /*
-           Conversie
-
-           -c:a copy probeert audio
-           rechtstreeks over te nemen.
-
-           Als dat niet lukt gebruiken we
-           AAC.
-        */
-
-        await engine.exec([
-
-            "-i",
-            input,
-
-            "-filter_complex",
-            filter,
-
-            "-map",
-            "[v]",
-
-            "-map",
-            "0:a?",
-
-            "-c:v",
-            "libx264",
-
-            "-preset",
-            "ultrafast",
-
-            "-crf",
-            "20",
-
-            "-pix_fmt",
-            "yuv420p",
-
-            "-c:a",
-            "aac",
-
-            "-b:a",
-            "192k",
-
-            "-shortest",
-
-            "-movflags",
-            "+faststart",
-
-            output
-
-        ]);
-
-
-        status.textContent =
-            "Bestand wordt klaargemaakt...";
-
-
-        /*
-           Output lezen
-        */
-
-        const data =
-            await engine.readFile(
-                output
-            );
-
-
-        const blob =
-            new Blob(
-                [data.buffer],
-                {
-                    type: "video/mp4"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(blob);
-
-
-        /*
-           Download
-        */
-
-        const name =
-            selectedFile.name
-                .replace(
-                    /\.[^/.]+$/,
-                    ""
-                );
-
-
-        download.href =
-            url;
-
-        download.download =
-            name + "_3D.mp4";
-
-
-        download.style.display =
-            "block";
-
-
-        /*
-           NU pas 100%.
-        */
-
-        bar.style.width =
-            "100%";
-
-        status.textContent =
-            "✅ Helemaal klaar!";
-
-
-        /*
-           Tijdelijke bestanden verwijderen
-        */
-
-        try {
-
-            await engine.deleteFile(
-                input
-            );
-
-            await engine.deleteFile(
-                output
-            );
-
-        } catch (e) {
-
-            console.log(e);
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        status.textContent =
-            "❌ Er ging iets mis.";
-
-        log.style.display =
-            "block";
-
-        log.textContent =
-            error.message ||
-            String(error);
-
-        bar.style.width =
-            "0%";
-
-    }
-
-
-    convert.disabled = false;
-
-};
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
-```
