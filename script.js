@@ -336,30 +336,23 @@ function drawFrame() {
         rightCanvas.getContext("2d");
 
 
-    /* ====================================
-       LINKERBEELD
-    ==================================== */
+   /* LINKERBEELD - naar rechts */
+leftCtx.drawImage(
+    sourceVideo,
+    depth * strength,
+    0,
+    width,
+    height
+);
 
-    leftCtx.drawImage(
-        sourceVideo,
-        -depth * strength,
-        0,
-        width,
-        height
-    );
-
-
-    /* ====================================
-       RECHTERBEELD
-    ==================================== */
-
-    rightCtx.drawImage(
-        sourceVideo,
-        depth * strength,
-        0,
-        width,
-        height
-    );
+/* RECHTERBEELD - naar links */
+rightCtx.drawImage(
+    sourceVideo,
+    -depth * strength,
+    0,
+    width,
+    height
+);
 
 
     /* ====================================
